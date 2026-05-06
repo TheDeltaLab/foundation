@@ -1,0 +1,43 @@
+{
+  "name": "@foundation/cli",
+  "version": "0.1.0",
+  "description": "CLI to copy @foundation/* package source into your project (shadcn-style).",
+  "type": "module",
+  "bin": {
+    "foundation": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "echo \"no tests\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheDeltaLab/foundation.git"
+  },
+  "packageManager": "pnpm@10.28.1",
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "typescript": "^5.5.0"
+  }
+}
