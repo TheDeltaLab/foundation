@@ -1,101 +1,62 @@
-# Contributing Guide
+# 👷 Contributing Guide
+Welcome! To keep our project history clean and to automate our release process, we use **Conventional Commits** paired with a Squash and Merge workflow.
 
-Welcome! This monorepo uses **Conventional Commits** + Squash & Merge so PR titles drive the changelog.
+## 🚀 The Workflow in a Nutshell
+1. Branch: Create a feature branch from main.
+2. Commit: Work on your changes. Don't worry about commit names on your branch; they will be squashed later.
+3. PR Title: Give your Pull Request a title following the Type(Scope) format.
+4. Merge: Once approved, we use Squash and Merge to move your changes into main.
 
-## Workflow
+## 📝 Pull Request Naming Standard
+We use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. Your PR Title becomes the final entry in our changelog.
 
-1. **Branch** off `main` (e.g. `feat/cli-add-command`).
-2. **Commit** freely on your branch — messages will be squashed away.
-3. **PR title** must follow `type(scope): description` (lowercase). The squash-merge commit becomes the changelog entry.
-4. **Squash & Merge** once approved.
+**Format**: `type(scope): description` (all lowercase)
 
-## PR title format
+### 1. The Types
+* `feat`: A new feature (triggers minor version bump).
+* `fix`: A bug fix (triggers patch version bump).
+* `perf`: A code change that improves performance.
+* `refactor`: Code refactoring.
+* `test`: Test additions or changes.
+* `ci`: Changes to GitHub Actions, linting, or deployment scripts.
+* `docs`: Documentation only changes.
+* `chore`: Maintenance (updating dependencies, etc.). Hidden from changelog.
 
-We follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+### 2. The Scopes (Required)
+Scopes match monorepo package or app names. This is **required** — the PR title linter will reject PRs without a scope.
 
-### Types
+**Apps:**
+* `cli`: shadcn-style CLI for distributing `@foundation/*` package source (`apps/cli`)
 
-| Type | Bump | Visible in changelog |
-|------|------|----------------------|
-| `feat` | minor | yes |
-| `fix` | patch | yes |
-| `perf` | patch | yes |
-| `docs` | none | yes |
-| `refactor`, `style`, `test`, `ci`, `chore` | none | hidden |
+**Packages:**
+* `base`: VS Code-derived utility library — arrays, async, event, lifecycle, observable, etc. (`packages/base`)
+* `platform`: depends on `base`; houses the log subsystem and other platform services (`packages/platform`)
+* `eslint-config`: shared flat ESLint config (`packages/eslint-config`)
 
-### Scopes (required)
+**Feature-based scopes** (for cross-cutting changes):
+* `deps`, `repo`, `infra`, etc.
 
-Scopes match a workspace name or a cross-cutting concern. The PR-title linter will reject titles without a scope.
+**Examples:**
+* `feat(cli): add --skip-existing flag`
+* `fix(base): resolve missing import in observableInternal`
+* `feat(platform): add log service implementation`
+* `chore(repo): align tsconfig with vscode (target ES2024)`
+* `chore(deps): update typescript to v5.8`
 
-**Workspace scopes:**
+> **Tip:** The scope must match a real package path for release-please to associate the change correctly.
 
-| Scope | Path | Notes |
-|-------|------|-------|
-| `cli` | `apps/cli` | `@foundation/cli` — shadcn-style `add` command |
-| `base` | `packages/base` | `@foundation/base` — VS Code-derived utilities |
-| `platform` | `packages/platform` | `@foundation/platform` — depends on `base`; log + future services |
-| `eslint-config` | `packages/eslint-config` | shared flat ESLint config |
+## 📦 Automated Releases
+We use `Release Please`.
+1. Every time a PR is merged to `main`, a "Release PR" is automatically updated/created by a bot.
+2. This "Release PR" batches all recent changes and prepares the next version number.
+3. We merge this Release PR periodically (e.g., once a week or after a big milestone) to officially tag a new version and update the `CHANGELOG.md`.
 
-**Cross-cutting scopes:**
+## Best Practices
+* Use the Imperative Mood: Write the description as if you are giving a command: "add feature" instead of "added feature."
+* One PR = One Task: Try not to mix a feat and a fix in the same PR. This makes it easier to revert changes if something goes wrong.
+* Check the Linter: A GitHub Action will check your PR title. If it's red, please rename your PR to match the standard!
 
-| Scope | Use for |
-|-------|---------|
-| `deps` | dependency bumps |
-| `repo` | root configs (`tsconfig.base.json`, `turbo.json`, workspace files) |
-| `ci` | GitHub Actions, release-please config |
-| `docs` | `README`, `CLAUDE.md`, `CONTRIBUTING.md` |
+## Why we do this
+> "We write code for machines, but we write history for humans. A clean git log is the best documentation a project can have."
 
-### Examples
-
-- `feat(cli): scaffold @foundation/cli with add command`
-- `feat(base): copy observableInternal from upstream vscode`
-- `fix(platform): correct exports map so subpath imports resolve`
-- `chore(repo): align tsconfig with vscode (target ES2024, experimentalDecorators)`
-- `chore(deps): bump eslint-plugin-import-x to ^4.16`
-
-> The scope must correspond to a real package or known cross-cut. Made-up scopes break release-please grouping.
-
-## Local checks before opening a PR
-
-```bash
-pnpm install
-pnpm build         # turbo orchestrates ^build deps
-pnpm -r lint       # eslint flat config across all packages
-pnpm -r typecheck  # tsc --noEmit per package (where the script exists)
-```
-
-There is **no test runner** wired up yet. If your change adds tests, also add the runner (vitest/node:test) and update this guide.
-
-## Working on `@foundation/base` (VS Code source)
-
-Most files under `packages/base/src/common/...` are copied verbatim from upstream VS Code (`vscode/src/vs/base/common/...`, MIT-licensed). Conventions:
-
-- **Don't reformat** copied files. Keep them byte-identical so future syncs are clean diffs.
-- **Pull missing siblings** when adding a new file (`arrays.ts` → also copy `arraysFind.ts`, `cancellation.ts`, etc., as needed).
-- **Decorator and `const enum` patterns** match VS Code on purpose. The shared `tsconfig.base.json` sets `experimentalDecorators: true` and `preserveConstEnums: true` so VS Code source compiles unchanged across our package boundary.
-- **Imports use `.js`** even though sources are `.ts` — required by `module: NodeNext` + `verbatimModuleSyntax`.
-
-## Working on the CLI
-
-The `add` command discovers files via the GitHub Trees API. To dogfood locally:
-
-```bash
-pnpm -F @foundation/cli build
-mkdir /tmp/scratch && cd /tmp/scratch
-node ~/path/to/foundation/apps/cli/dist/index.js add base foundation-base
-```
-
-Default `--repo` comes from `apps/cli/package.json#repository.url`. Override with `--repo owner/name --ref branch-or-tag`. Set `GITHUB_TOKEN` in the environment to avoid the 60 req/hr anonymous rate limit.
-
-## Releases
-
-We use [release-please](https://github.com/googleapis/release-please).
-
-1. Every merge to `main` updates a single open "Release PR" with batched changes.
-2. Merging that Release PR cuts a tag, updates `CHANGELOG.md`, and bumps `package.json`.
-
-## Best practices
-
-- **Imperative mood** in PR titles: "add feature" not "added feature".
-- **One PR = one logical change.** Mixing `feat` + `fix` makes reverts painful.
-- **Lint your PR title** mentally before opening: `type(scope): description`, lowercase, no period.
+Thank you for contributing to our project! Your adherence to these guidelines helps us maintain a clean and efficient codebase.
