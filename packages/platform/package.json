@@ -11,6 +11,9 @@
   "dependencies": {
     "@foundation/base": "workspace:*"
   },
+  "peerDependencies": {
+    "@foundation/base": "workspace:*"
+  },
   "devDependencies": {
     "@foundation/eslint-config": "workspace:*",
     "eslint": "^10.3.0"
