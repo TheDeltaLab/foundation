@@ -1,5 +1,8 @@
 {
-  "name": "@foundation/cli",
+  "name": "@delta-ai/foundation",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.1.0",
   "description": "CLI to copy @foundation/* package source into your project (shadcn-style).",
   "type": "module",
