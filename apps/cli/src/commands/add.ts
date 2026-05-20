@@ -10,7 +10,7 @@ export async function runAdd(pkg: string, folder: string | undefined, opts: AddO
 		throw new Error('`--yes` and `--skip-existing` are mutually exclusive.');
 	}
 
-	intro(`Adding @foundation/${pkg}`);
+	intro(`Adding ${pkg}`);
 
 	const s = spinner();
 	s.start(`Listing files from ${opts.repo}@${opts.ref}`);

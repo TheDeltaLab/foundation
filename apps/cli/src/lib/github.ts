@@ -2,7 +2,7 @@ import type { TreeResponse } from '../types.js';
 
 export class UnknownPackageError extends Error {
 	constructor(pkg: string) {
-		super(`Unknown package \`@foundation/${pkg}\` — no \`packages/${pkg}/package.json\` found in the repo.`);
+		super(`Unknown package \`${pkg}\` — no \`packages/${pkg}/package.json\` found in the repo.`);
 		this.name = 'UnknownPackageError';
 	}
 }
@@ -11,7 +11,7 @@ function apiHeaders(): Record<string, string> {
 	const headers: Record<string, string> = {
 		Accept: 'application/vnd.github+json',
 		'X-GitHub-Api-Version': '2022-11-28',
-		'User-Agent': '@foundation/cli'
+		'User-Agent': '@delta-ai/foundation'
 	};
 	const token = process.env.GITHUB_TOKEN;
 	if (token) {
@@ -43,10 +43,25 @@ export async function listPackageFiles(repo: string, ref: string, pkg: string): 
 	}
 
 	const prefix = `packages/${pkg}/`;
-	const keep = (p: string): boolean =>
-		p === `${prefix}package.json` ||
-		p === `${prefix}tsconfig.json` ||
-		p.startsWith(`${prefix}src/`);
+	// Copy everything inside packages/<pkg>/ except generated output,
+	// dependency directories, and caches. Matches shadcn-style "adopt the
+	// source" semantics rather than a curated whitelist.
+	const EXCLUDE_SEGMENTS = new Set([
+		'node_modules',
+		'dist',
+		'build',
+		'coverage',
+		'.turbo',
+		'.next',
+		'.cache'
+	]);
+	const keep = (p: string): boolean => {
+		if (!p.startsWith(prefix)) return false;
+		const rel = p.slice(prefix.length);
+		if (!rel) return false;
+		const segments = rel.split('/');
+		return !segments.some((s) => EXCLUDE_SEGMENTS.has(s));
+	};
 
 	const files = body.tree
 		.filter((e) => e.type === 'blob' && keep(e.path))
@@ -60,7 +75,10 @@ export async function listPackageFiles(repo: string, ref: string, pkg: string): 
 }
 
 export async function fetchRaw(repo: string, ref: string, path: string): Promise<string> {
-	const url = `https://raw.githubusercontent.com/${repo}/${encodeURIComponent(ref)}/${path}`;
+	// raw.githubusercontent.com expects the ref unencoded (e.g. `feat/x`,
+	// not `feat%2Fx`) and path segments encoded individually to preserve `/`.
+	const encodedPath = path.split('/').map(encodeURIComponent).join('/');
+	const url = `https://raw.githubusercontent.com/${repo}/${ref}/${encodedPath}`;
 	const res = await fetch(url);
 	if (!res.ok) {
 		throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);

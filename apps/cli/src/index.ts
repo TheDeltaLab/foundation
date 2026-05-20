@@ -19,12 +19,12 @@ const program = new Command();
 
 program
 	.name('foundation')
-	.description('Copy @foundation/* package source into your project.')
+	.description('Copy foundation package source into your project.')
 	.version(pkgJson.version);
 
 program
 	.command('add')
-	.argument('<pkg>', 'Bare package name (e.g. `base` for @foundation/base).')
+	.argument('<pkg>', 'Bare package name (e.g. `base` for packages/base).')
 	.argument('[folder]', 'Destination folder name (defaults to <pkg>).')
 	.option('--repo <owner/name>', 'GitHub repo to pull from.', defaultRepo)
 	.option('--ref <ref>', 'Branch, tag, or commit SHA.', DEFAULT_REF)
