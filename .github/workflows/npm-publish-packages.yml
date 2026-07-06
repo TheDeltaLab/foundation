@@ -5,15 +5,16 @@ permissions:
   id-token: write
 
 on:
-  push:
-    tags:
-      - 'base-v*'
-      - 'platform-v*'
-      - 'eslint-config-v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g. base-v0.2.0)'
+        required: true
+        type: string
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.inputs.tag_name }}
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -24,6 +25,8 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag_name }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -33,20 +36,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 
       - name: Resolve package from tag
         id: resolve
         env:
-          GITHUB_REF: ${{ github.ref }}
+          TAG_NAME: ${{ github.event.inputs.tag_name }}
         run: |
           set -e
-          TAG="${GITHUB_REF#refs/tags/}"
 
-          # Map tag prefix to package path and filter name
-          case "$TAG" in
+          case "$TAG_NAME" in
             base-v*)
               PKG_PATH="packages/base"
               PKG_FILTER="@delta-ai/base"
@@ -60,20 +61,18 @@ jobs:
               PKG_FILTER="@delta-ai/eslint-config"
               ;;
             *)
-              echo "::error::Unknown tag prefix: $TAG"
+              echo "::error::Unknown tag prefix in: $TAG_NAME"
               exit 1
               ;;
           esac
 
-          TAG_VERSION="${TAG#*-v}"
+          TAG_VERSION="${TAG_NAME#*-v}"
           PKG_VERSION=$(node -p "require('./${PKG_PATH}/package.json').version")
 
           echo "path=${PKG_PATH}" >> $GITHUB_OUTPUT
           echo "filter=${PKG_FILTER}" >> $GITHUB_OUTPUT
-          echo "tag_version=${TAG_VERSION}" >> $GITHUB_OUTPUT
-          echo "pkg_version=${PKG_VERSION}" >> $GITHUB_OUTPUT
 
-          echo "Tag: $TAG → ${PKG_FILTER} @ ${PKG_PATH} (tag=${TAG_VERSION}, pkg=${PKG_VERSION})"
+          echo "Tag: $TAG_NAME → ${PKG_FILTER} @ ${PKG_PATH} (tag=${TAG_VERSION}, pkg=${PKG_VERSION})"
 
           if [[ "$TAG_VERSION" != "$PKG_VERSION" ]]; then
             echo "::error::Tag version ($TAG_VERSION) does not match $PKG_PATH/package.json version ($PKG_VERSION)"
@@ -84,7 +83,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm -F '${{ steps.resolve.outputs.filter }}' build
+        run: pnpm turbo run build --filter='${{ steps.resolve.outputs.filter }}...'
 
       - name: Publish
         working-directory: ${{ steps.resolve.outputs.path }}
@@ -92,7 +91,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           set -e
-          npm config set provenance true
           ARGS="--access public"
           VERSION=$(node -p "require('./package.json').version")
           if [[ $VERSION == *-* ]]; then
