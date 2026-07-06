@@ -7,6 +7,10 @@
     "base.js",
     "node.js"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheDeltaLab/foundation.git"
+  },
   "publishConfig": {
     "access": "public"
   },
