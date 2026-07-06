@@ -2,8 +2,11 @@
   "name": "@delta-ai/eslint-config",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
   "type": "module",
+  "files": ["base.js", "node.js"],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
