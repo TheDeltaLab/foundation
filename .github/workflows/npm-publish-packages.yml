@@ -87,6 +87,8 @@ jobs:
 
       - name: Publish
         working-directory: ${{ steps.resolve.outputs.path }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           set -e
           ARGS="--access public"
