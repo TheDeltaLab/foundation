@@ -1,6 +1,6 @@
 {
-  ".": "0.1.0",
-  "packages/base": "0.1.0",
-  "packages/platform": "0.1.0",
-  "packages/eslint-config": "0.1.0"
+  ".": "0.1.1",
+  "packages/base": "0.1.1",
+  "packages/platform": "0.1.1",
+  "packages/eslint-config": "0.1.1"
 }
