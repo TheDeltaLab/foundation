@@ -83,7 +83,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm -F '${{ steps.resolve.outputs.filter }}' build
+        run: pnpm turbo run build --filter='${{ steps.resolve.outputs.filter }}...'
 
       - name: Publish
         working-directory: ${{ steps.resolve.outputs.path }}
