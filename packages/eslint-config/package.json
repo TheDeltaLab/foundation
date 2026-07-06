@@ -1,9 +1,12 @@
 {
   "name": "@delta-ai/eslint-config",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "type": "module",
-  "files": ["base.js", "node.js"],
+  "files": [
+    "base.js",
+    "node.js"
+  ],
   "publishConfig": {
     "access": "public"
   },
