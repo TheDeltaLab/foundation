@@ -8,6 +8,18 @@
       "component": "foundation",
       "changelog-path": "CHANGELOG.md",
       "include-component-in-tag": false
+    },
+    "packages/base": {
+      "component": "base",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/platform": {
+      "component": "platform",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/eslint-config": {
+      "component": "eslint-config",
+      "changelog-path": "CHANGELOG.md"
     }
   },
   "changelog-sections": [

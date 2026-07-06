@@ -1,0 +1,101 @@
+name: NPM Publish Packages
+
+permissions:
+  contents: read
+  id-token: write
+
+on:
+  push:
+    tags:
+      - 'base-v*'
+      - 'platform-v*'
+      - 'eslint-config-v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    name: Publish package
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Resolve package from tag
+        id: resolve
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          set -e
+          TAG="${GITHUB_REF#refs/tags/}"
+
+          # Map tag prefix to package path and filter name
+          case "$TAG" in
+            base-v*)
+              PKG_PATH="packages/base"
+              PKG_FILTER="@delta-ai/base"
+              ;;
+            platform-v*)
+              PKG_PATH="packages/platform"
+              PKG_FILTER="@delta-ai/platform"
+              ;;
+            eslint-config-v*)
+              PKG_PATH="packages/eslint-config"
+              PKG_FILTER="@delta-ai/eslint-config"
+              ;;
+            *)
+              echo "::error::Unknown tag prefix: $TAG"
+              exit 1
+              ;;
+          esac
+
+          TAG_VERSION="${TAG#*-v}"
+          PKG_VERSION=$(node -p "require('./${PKG_PATH}/package.json').version")
+
+          echo "path=${PKG_PATH}" >> $GITHUB_OUTPUT
+          echo "filter=${PKG_FILTER}" >> $GITHUB_OUTPUT
+          echo "tag_version=${TAG_VERSION}" >> $GITHUB_OUTPUT
+          echo "pkg_version=${PKG_VERSION}" >> $GITHUB_OUTPUT
+
+          echo "Tag: $TAG → ${PKG_FILTER} @ ${PKG_PATH} (tag=${TAG_VERSION}, pkg=${PKG_VERSION})"
+
+          if [[ "$TAG_VERSION" != "$PKG_VERSION" ]]; then
+            echo "::error::Tag version ($TAG_VERSION) does not match $PKG_PATH/package.json version ($PKG_VERSION)"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm -F '${{ steps.resolve.outputs.filter }}' build
+
+      - name: Publish
+        working-directory: ${{ steps.resolve.outputs.path }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -e
+          npm config set provenance true
+          ARGS="--access public"
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ $VERSION == *-* ]]; then
+            ARGS="$ARGS --tag preview"
+          fi
+          npm publish $ARGS

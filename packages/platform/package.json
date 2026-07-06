@@ -2,8 +2,17 @@
   "name": "@delta-ai/platform",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
   "type": "module",
+  "files": ["dist"],
+  "publishConfig": {
+    "access": "public",
+    "dependencies": {
+      "@delta-ai/base": "^0.1.0"
+    },
+    "peerDependencies": {
+      "@delta-ai/base": "^0.1.0"
+    }
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
