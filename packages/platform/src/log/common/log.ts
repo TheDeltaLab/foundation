@@ -3,20 +3,20 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as nls from '@foundation/base/nls.js';
-import { toErrorMessage } from '@foundation/base/common/errorMessage.js';
-import { Emitter, Event } from '@foundation/base/common/event.js';
-import { hash } from '@foundation/base/common/hash.js';
-import { Disposable, type IDisposable, toDisposable } from '@foundation/base/common/lifecycle.js';
-import { ResourceMap } from '@foundation/base/common/map.js';
-import { isWindows } from '@foundation/base/common/platform.js';
-import { joinPath } from '@foundation/base/common/resources.js';
-import { type Mutable, isNumber, isString } from '@foundation/base/common/types.js';
-import { URI } from '@foundation/base/common/uri.js';
+import * as nls from '@delta-ai/base/nls.js';
+import { toErrorMessage } from '@delta-ai/base/common/errorMessage.js';
+import { Emitter, Event } from '@delta-ai/base/common/event.js';
+import { hash } from '@delta-ai/base/common/hash.js';
+import { Disposable, type IDisposable, toDisposable } from '@delta-ai/base/common/lifecycle.js';
+import { ResourceMap } from '@delta-ai/base/common/map.js';
+import { isWindows } from '@delta-ai/base/common/platform.js';
+import { joinPath } from '@delta-ai/base/common/resources.js';
+import { type Mutable, isNumber, isString } from '@delta-ai/base/common/types.js';
+import { URI } from '@delta-ai/base/common/uri.js';
 import type { ILocalizedString } from '../../action/common/action.js';
-import { RawContextKey } from '@foundation/platform/contextkey/common/contextkey.js';
+import { RawContextKey } from '@delta-ai/platform/contextkey/common/contextkey.js';
 import { IEnvironmentService } from '../../environment/common/environment.js';
-import { createDecorator } from '@foundation/platform/instantiation/common/instantiation.js';
+import { createDecorator } from '@delta-ai/platform/instantiation/common/instantiation.js';
 
 export const ILogService = createDecorator<ILogService>('logService');
 export const ILoggerService = createDecorator<ILoggerService>('loggerService');

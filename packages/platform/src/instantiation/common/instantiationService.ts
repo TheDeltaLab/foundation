@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *-------------------------------------------------------------------------------------------- */
 
-import { GlobalIdleValue } from '@foundation/base/common/async.js';
-import { illegalState } from '@foundation/base/common/errors.js';
-import { Event } from '@foundation/base/common/event.js';
-import { DisposableStore, dispose, type IDisposable, isDisposable, toDisposable } from '@foundation/base/common/lifecycle.js';
-import { LinkedList } from '@foundation/base/common/linkedList.js';
+import { GlobalIdleValue } from '@delta-ai/base/common/async.js';
+import { illegalState } from '@delta-ai/base/common/errors.js';
+import { Event } from '@delta-ai/base/common/event.js';
+import { DisposableStore, dispose, type IDisposable, isDisposable, toDisposable } from '@delta-ai/base/common/lifecycle.js';
+import { LinkedList } from '@delta-ai/base/common/linkedList.js';
 import { SyncDescriptor, type SyncDescriptor0 } from './descriptors.js';
 import { Graph } from './graph.js';
 import { type GetLeadingNonServiceArgs, IInstantiationService, type ServiceIdentifier, type ServicesAccessor, _util } from './instantiation.js';

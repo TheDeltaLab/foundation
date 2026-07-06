@@ -3,14 +3,14 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Emitter, Event } from '@foundation/base/common/event.js';
-import { Iterable } from '@foundation/base/common/iterator.js';
-import type { IJSONSchema } from '@foundation/base/common/jsonSchema.js';
-import { type IDisposable, markAsSingleton, toDisposable } from '@foundation/base/common/lifecycle.js';
-import { LinkedList } from '@foundation/base/common/linkedList.js';
-import { type TypeConstraint, validateConstraints } from '@foundation/base/common/types.js';
-import type { ILocalizedString } from '@foundation/platform/action/common/action.js';
-import { createDecorator, type ServicesAccessor } from '@foundation/platform/instantiation/common/instantiation.js';
+import { Emitter, Event } from '@delta-ai/base/common/event.js';
+import { Iterable } from '@delta-ai/base/common/iterator.js';
+import type { IJSONSchema } from '@delta-ai/base/common/jsonSchema.js';
+import { type IDisposable, markAsSingleton, toDisposable } from '@delta-ai/base/common/lifecycle.js';
+import { LinkedList } from '@delta-ai/base/common/linkedList.js';
+import { type TypeConstraint, validateConstraints } from '@delta-ai/base/common/types.js';
+import type { ILocalizedString } from '@delta-ai/platform/action/common/action.js';
+import { createDecorator, type ServicesAccessor } from '@delta-ai/platform/instantiation/common/instantiation.js';
 
 export const ICommandService = createDecorator<ICommandService>('commandService');
 

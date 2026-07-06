@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { URI, type UriDto } from '@foundation/base/common/uri.js';
-import type { ContextKeyExpression } from '@foundation/platform/contextkey/common/contextkey.js';
-import { ThemeIcon } from '@foundation/base/common/themables.js';
+import { URI, type UriDto } from '@delta-ai/base/common/uri.js';
+import type { ContextKeyExpression } from '@delta-ai/platform/contextkey/common/contextkey.js';
+import { ThemeIcon } from '@delta-ai/base/common/themables.js';
 import { Categories } from './actionCommonCategories.js';
-import type { ICommandMetadata } from '@foundation/platform/commands/common/commands.js';
+import type { ICommandMetadata } from '@delta-ai/platform/commands/common/commands.js';
 
 export interface ILocalizedString {
 

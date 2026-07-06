@@ -3,13 +3,13 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { toLocalISOString } from '@foundation/base/common/date.js';
-import { memoize } from '@foundation/base/common/decorators.js';
-import { FileAccess, Schemas } from '@foundation/base/common/network.js';
-import { dirname, join, normalize, resolve } from '@foundation/base/common/path.js';
-import { env } from '@foundation/base/common/process.js';
-import { joinPath } from '@foundation/base/common/resources.js';
-import { URI } from '@foundation/base/common/uri.js';
+import { toLocalISOString } from '@delta-ai/base/common/date.js';
+import { memoize } from '@delta-ai/base/common/decorators.js';
+import { FileAccess, Schemas } from '@delta-ai/base/common/network.js';
+import { dirname, join, normalize, resolve } from '@delta-ai/base/common/path.js';
+import { env } from '@delta-ai/base/common/process.js';
+import { joinPath } from '@delta-ai/base/common/resources.js';
+import { URI } from '@delta-ai/base/common/uri.js';
 import type { NativeParsedArgs } from './argv.js';
 import { type ExtensionKind, type IExtensionHostDebugParams, INativeEnvironmentService } from './environment.js';
 

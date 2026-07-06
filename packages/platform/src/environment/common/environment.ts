@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { URI } from '@foundation/base/common/uri.js';
+import { URI } from '@delta-ai/base/common/uri.js';
 import type { NativeParsedArgs } from './argv.js';
 import { createDecorator, refineServiceDecorator } from '../../instantiation/common/instantiation.js';
 

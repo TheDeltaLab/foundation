@@ -14,7 +14,7 @@ export default [
     braceStyle: '1tbs',
   }),
   {
-    settings: { 'import-x/internal-regex': '^(@?foundation)/' },
+    settings: { 'import-x/internal-regex': '^@delta-ai/' },
     plugins: {
       'import-x': pluginImport,
     },
@@ -38,7 +38,7 @@ export default [
         patterns: [
           {
             regex: '^\\.\\./\\.\\./',
-            message: 'Deep relative imports (../../) are not allowed. Use the package alias instead: apps use "@foundation/*", packages use "@foundation/package-name/path".',
+            message: 'Deep relative imports (../../) are not allowed. Use the package alias instead: apps use "@delta-ai/*", packages use "@delta-ai/package-name/path".',
           },
         ],
       }],

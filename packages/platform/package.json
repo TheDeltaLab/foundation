@@ -1,5 +1,5 @@
 {
-  "name": "@foundation/platform",
+  "name": "@delta-ai/platform",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -9,13 +9,13 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@foundation/base": "workspace:*"
+    "@delta-ai/base": "workspace:*"
   },
   "peerDependencies": {
-    "@foundation/base": "workspace:*"
+    "@delta-ai/base": "workspace:*"
   },
   "devDependencies": {
-    "@foundation/eslint-config": "workspace:*",
+    "@delta-ai/eslint-config": "workspace:*",
     "eslint": "^10.3.0"
   },
   "exports": {
