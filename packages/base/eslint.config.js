@@ -1,1 +1,1 @@
-export { default } from '@foundation/eslint-config/node.js';
+export { default } from '@delta-ai/eslint-config/node.js';

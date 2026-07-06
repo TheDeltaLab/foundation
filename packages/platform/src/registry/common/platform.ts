@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as Assert from '@foundation/base/common/assert.js';
-import * as Types from '@foundation/base/common/types.js';
+import * as Assert from '@delta-ai/base/common/assert.js';
+import * as Types from '@delta-ai/base/common/types.js';
 
 export interface IRegistry {
 

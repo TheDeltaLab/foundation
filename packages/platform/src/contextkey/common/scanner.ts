@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CharCode } from '@foundation/base/common/charCode.js';
-import { illegalState } from '@foundation/base/common/errors.js';
-import { localize } from '@foundation/base/nls.js';
+import { CharCode } from '@delta-ai/base/common/charCode.js';
+import { illegalState } from '@delta-ai/base/common/errors.js';
+import { localize } from '@delta-ai/base/nls.js';
 
 export const enum TokenType {
 	LParen,

@@ -30,7 +30,7 @@ importers:
 
   packages/base:
     devDependencies:
-      '@foundation/eslint-config':
+      '@delta-ai/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       eslint:
@@ -63,11 +63,11 @@ importers:
 
   packages/platform:
     dependencies:
-      '@foundation/base':
+      '@delta-ai/base':
         specifier: workspace:*
         version: link:../base
     devDependencies:
-      '@foundation/eslint-config':
+      '@delta-ai/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       eslint:

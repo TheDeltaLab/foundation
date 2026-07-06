@@ -1,5 +1,5 @@
 {
-  "name": "@foundation/base",
+  "name": "@delta-ai/base",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@foundation/eslint-config": "workspace:*",
+    "@delta-ai/eslint-config": "workspace:*",
     "eslint": "^10.3.0"
   },
   "exports": {

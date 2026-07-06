@@ -26,7 +26,7 @@ We use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/
 Scopes match monorepo package or app names. This is **required** — the PR title linter will reject PRs without a scope.
 
 **Apps:**
-* `cli`: shadcn-style CLI for distributing `@foundation/*` package source (`apps/cli`)
+* `cli`: shadcn-style CLI for distributing `@delta-ai/*` package source (`apps/cli`)
 
 **Packages:**
 * `base`: VS Code-derived utility library — arrays, async, event, lifecycle, observable, etc. (`packages/base`)

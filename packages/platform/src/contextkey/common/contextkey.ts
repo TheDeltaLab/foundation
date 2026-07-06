@@ -3,15 +3,15 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CharCode } from '@foundation/base/common/charCode.js';
-import { Event } from '@foundation/base/common/event.js';
-import { isChrome, isEdge, isFirefox, isLinux, isMacintosh, isSafari, isWeb, isWindows } from '@foundation/base/common/platform.js';
-import { isFalsyOrWhitespace } from '@foundation/base/common/strings.js';
+import { CharCode } from '@delta-ai/base/common/charCode.js';
+import { Event } from '@delta-ai/base/common/event.js';
+import { isChrome, isEdge, isFirefox, isLinux, isMacintosh, isSafari, isWeb, isWindows } from '@delta-ai/base/common/platform.js';
+import { isFalsyOrWhitespace } from '@delta-ai/base/common/strings.js';
 import { Scanner, type LexingError, type Token, TokenType } from './scanner.js';
-import { createDecorator } from '@foundation/platform/instantiation/common/instantiation.js';
-import { localize } from '@foundation/base/nls.js';
-import type { IDisposable } from '@foundation/base/common/lifecycle.js';
-import { illegalArgument } from '@foundation/base/common/errors.js';
+import { createDecorator } from '@delta-ai/platform/instantiation/common/instantiation.js';
+import { localize } from '@delta-ai/base/nls.js';
+import type { IDisposable } from '@delta-ai/base/common/lifecycle.js';
+import { illegalArgument } from '@delta-ai/base/common/errors.js';
 
 const CONSTANT_VALUES = new Map<string, boolean>();
 CONSTANT_VALUES.set('false', false);

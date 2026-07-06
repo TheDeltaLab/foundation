@@ -4,7 +4,7 @@
     "access": "public"
   },
   "version": "0.1.0",
-  "description": "CLI to copy @foundation/* package source into your project (shadcn-style).",
+  "description": "CLI to copy @delta-ai/* package source into your project (shadcn-style).",
   "type": "module",
   "bin": {
     "foundation": "./dist/index.js"

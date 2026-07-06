@@ -9,9 +9,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `apps/*` — runnable applications:
   - `@foundation/cli` (`apps/cli`) — shadcn-style CLI; `pnpm dlx @foundation/cli add <pkg> [folder]` copies the source of a `@foundation/<pkg>` workspace package into the user's CWD by reading the GitHub Trees API and fetching `raw.githubusercontent.com`. Default `--repo` is parsed from this package's `repository.url`. Conflict UX: per-file prompt (skip/overwrite); `--yes` overwrites all, `--skip-existing` skips all. `GITHUB_TOKEN` env var lifts the unauthenticated 60 req/hr API limit.
 - `packages/*` — shared libraries:
-  - `@foundation/base` — utility library (TypeScript, ESM). Source files originate from VS Code (Microsoft, MIT). Uses VS Code's `@memoize`/legacy decorators and ambient `const enum`s (handled via project-wide tsconfig flags below).
-  - `@foundation/platform` — depends on `@foundation/base`; currently houses the log subsystem (`src/log/`).
-  - `@foundation/eslint-config` — shared flat ESLint config. `base.js` for any TS package, `node.js` for Node-runtime packages.
+  - `@delta-ai/base` — utility library (TypeScript, ESM). Source files originate from VS Code (Microsoft, MIT). Uses VS Code's `@memoize`/legacy decorators and ambient `const enum`s (handled via project-wide tsconfig flags below).
+  - `@delta-ai/platform` — depends on `@delta-ai/base`; currently houses the log subsystem (`src/log/`).
+  - `@delta-ai/eslint-config` — shared flat ESLint config. `base.js` for any TS package, `node.js` for Node-runtime packages.
 
 There is **no** `packages/config` — the shared `tsconfig.base.json` lives at the repo root and is referenced as `../../tsconfig.base.json` by every package.
 
@@ -22,9 +22,9 @@ There is **no** `packages/config` — the shared `tsconfig.base.json` lives at t
 ```bash
 pnpm install                    # install all workspace deps
 pnpm build                      # turbo run build (respects ^build deps)
-pnpm -F @foundation/base build  # build a single package
-pnpm -F @foundation/base lint   # eslint .  (uses flat config)
-pnpm -F @foundation/base typecheck  # tsc --noEmit
+pnpm -F @delta-ai/base build  # build a single package
+pnpm -F @delta-ai/base lint   # eslint .  (uses flat config)
+pnpm -F @delta-ai/base typecheck  # tsc --noEmit
 
 # CLI dogfooding
 pnpm -F @foundation/cli build
@@ -37,7 +37,7 @@ There is no test runner. Every package's `test` script is the placeholder `echo 
 
 ## TypeScript Conventions
 
-The shared `tsconfig.base.json` (repo root) sets — these match VS Code's source assumptions on purpose, since `@foundation/base` is upstream-derived:
+The shared `tsconfig.base.json` (repo root) sets — these match VS Code's source assumptions on purpose, since `@delta-ai/base` is upstream-derived:
 
 | Flag | Value | Why |
 |------|-------|-----|
@@ -54,7 +54,7 @@ Per-package `tsconfig.json` extends the root, sets `outDir: ./dist`, `rootDir: .
 
 ### Cross-package imports
 
-Both `@foundation/base` and `@foundation/platform` use the **same `exports` map**:
+Both `@delta-ai/base` and `@delta-ai/platform` use the **same `exports` map**:
 
 ```jsonc
 "exports": {
@@ -68,8 +68,8 @@ Both `@foundation/base` and `@foundation/platform` use the **same `exports` map*
 The `*` substitution slot deliberately omits the `.js` so the import path's `.js` becomes the file extension Node resolves. **Always** import with the `.js` suffix even though the source is `.ts`:
 
 ```ts
-import { Emitter } from '@foundation/base/common/event.js';   // ✅
-import { Emitter } from '@foundation/base/common/event';      // ❌ ERR_PACKAGE_PATH_NOT_EXPORTED
+import { Emitter } from '@delta-ai/base/common/event.js';   // ✅
+import { Emitter } from '@delta-ai/base/common/event';      // ❌ ERR_PACKAGE_PATH_NOT_EXPORTED
 ```
 
 ## VS Code source sync
